@@ -18,7 +18,7 @@ An R script that was used to:
 1. construct the drug-gene networks
 2. make the plots to visualize the network
 
-PheWAS_Results.R
+`PheWAS_Results.R`
 
 An R script that was used to:
 1. plot the phewas associations
