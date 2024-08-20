@@ -1,7 +1,5 @@
 # AdiposityGSEM
 
-Manuscript in review.
-
 Title: Modeling the genomic architecture of adiposity and anthropometrics across the lifespan
 
 `GenomicSEM_efa_cfa_multivariateGWAS.sh`
