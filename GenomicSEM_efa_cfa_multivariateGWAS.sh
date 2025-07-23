@@ -937,21 +937,24 @@ write.table(as.data.frame(Loadings_2_pro), "EFA_loadings.csv", col.names=T, row.
 # ?usermodel
 #use the write.model function to write out the model
 Model_2_pro <- write.model(Loadings_2_pro, S_LD, 0.5, mustload=TRUE)
+Model_2_pro <- write.model(Loadings_2_pro, S_LD, 0.5, mustload=TRUE, fix_resid = F)
 # Model_2_pro <- write.model(Loadings_2_pro, S_LD, 0.5, mustload=FALSE)
 save(Model_2_pro, file="Model_2_pro.Rdata")
 # load("Model_2_pro.Rdata")
 
-Model_2_pro <- "
-F1=~c_BL*BL + c_BW*BW + c_IHC*IHC
-c_BL < 0.9999
-F2=~c_WHRadjBMI_females*WHRadjBMI_females + c_WHRadjBMI_males*WHRadjBMI_males + c_WCadjBMI_females*WCadjBMI_females
-c_WCadjBMI_females < 0.9999
-F3=~c_WCadjBMI_males*WCadjBMI_males + c_Height*Height + c_HIPadjBMI_females*HIPadjBMI_females + c_HIPadjBMI_males*HIPadjBMI_males + c_TFR_females*TFR_females + c1_TFR_males*TFR_males
-F4=~c_AFR_females*AFR_females + c_AFR_males*AFR_males + c_bmiTrajBeta*bmiTrajBeta + c_BMI_females*BMI_females + c_BMI_males*BMI_males + c_CO*CO + c2_TFR_males*TFR_males
-WCadjBMI_females~~WCadjBMI_males
-F1~~F2 \n F1~~F3 \n F1~~F4 \n F2~~F3 \n F2~~F4 \n F3~~F4
-BMI_females ~~ ceio*BMI_females \n ceio > .0001 \n BMI_males ~~ acmr*BMI_males \n acmr > .0001 \n HIPadjBMI_females ~~ aekl*HIPadjBMI_females \n aekl > .0001 \n HIPadjBMI_males ~~ hiky*HIPadjBMI_males \n hiky > .0001 \n WCadjBMI_females ~~ adkq*WCadjBMI_females \n adkq > .0001 \n WCadjBMI_males ~~ ctuz*WCadjBMI_males \n ctuz > .0001 \n WHRadjBMI_females ~~ bgqz*WHRadjBMI_females \n bgqz > .0001 \n WHRadjBMI_males ~~ crsy*WHRadjBMI_males \n crsy > .0001 \n BL ~~ mnrt*BL \n mnrt > .0001 \n BW ~~ cefx*BW \n cefx > .0001 \n CO ~~ aciz*CO \n aciz > .0001 \n IHC ~~ bhsu*IHC \n bhsu > .0001 \n Height ~~ cdvw*Height \n cdvw > .0001 \n bmiTrajBeta ~~ fijx*bmiTrajBeta \n fijx > .0001 \n TFR_females ~~ cirw*TFR_females \n cirw > .0001 \n AFR_females ~~ fjps*AFR_females \n fjps > .0001 \n AFR_males ~~ cmuz*AFR_males \n cmuz > .0001
-"
+
+### Old model code
+# Model_2_pro <- "
+# F1=~c_BL*BL + c_BW*BW + c_IHC*IHC
+# c_BL < 0.9999
+# F2=~c_WHRadjBMI_females*WHRadjBMI_females + c_WHRadjBMI_males*WHRadjBMI_males + c_WCadjBMI_females*WCadjBMI_females
+# c_WCadjBMI_females < 0.9999
+# F3=~c_WCadjBMI_males*WCadjBMI_males + c_Height*Height + c_HIPadjBMI_females*HIPadjBMI_females + c_HIPadjBMI_males*HIPadjBMI_males + c_TFR_females*TFR_females + c1_TFR_males*TFR_males
+# F4=~c_AFR_females*AFR_females + c_AFR_males*AFR_males + c_bmiTrajBeta*bmiTrajBeta + c_BMI_females*BMI_females + c_BMI_males*BMI_males + c_CO*CO + c2_TFR_males*TFR_males
+# WCadjBMI_females~~WCadjBMI_males
+# F1~~F2 \n F1~~F3 \n F1~~F4 \n F2~~F3 \n F2~~F4 \n F3~~F4
+# BMI_females ~~ ceio*BMI_females \n ceio > .0001 \n BMI_males ~~ acmr*BMI_males \n acmr > .0001 \n HIPadjBMI_females ~~ aekl*HIPadjBMI_females \n aekl > .0001 \n HIPadjBMI_males ~~ hiky*HIPadjBMI_males \n hiky > .0001 \n WCadjBMI_females ~~ adkq*WCadjBMI_females \n adkq > .0001 \n WCadjBMI_males ~~ ctuz*WCadjBMI_males \n ctuz > .0001 \n WHRadjBMI_females ~~ bgqz*WHRadjBMI_females \n bgqz > .0001 \n WHRadjBMI_males ~~ crsy*WHRadjBMI_males \n crsy > .0001 \n BL ~~ mnrt*BL \n mnrt > .0001 \n BW ~~ cefx*BW \n cefx > .0001 \n CO ~~ aciz*CO \n aciz > .0001 \n IHC ~~ bhsu*IHC \n bhsu > .0001 \n Height ~~ cdvw*Height \n cdvw > .0001 \n bmiTrajBeta ~~ fijx*bmiTrajBeta \n fijx > .0001 \n TFR_females ~~ cirw*TFR_females \n cirw > .0001 \n AFR_females ~~ fjps*AFR_females \n fjps > .0001 \n AFR_males ~~ cmuz*AFR_males \n cmuz > .0001
+# "
 
 # BMI_females~~BMI_males 0.93, F5
 # HIPadjBMI_females~~HIPadjBMI_males 0.89, F2
@@ -961,10 +964,21 @@ BMI_females ~~ ceio*BMI_females \n ceio > .0001 \n BMI_males ~~ acmr*BMI_males \
 # AFR_females~~AFR_males 0.42, F5
 # LFR_females~~LFR_males 0.35, F2 F4
 
+
+Model_2_pro <- paste0("
+F1=~BL + BW + IHC
+F2=~WHRadjBMI_females + WHRadjBMI_males + WCadjBMI_females
+F3=~WCadjBMI_females + WCadjBMI_males + Height + HIPadjBMI_females + HIPadjBMI_males + TFR_females + TFR_males
+F4=~AFR_females + AFR_males + bmiTrajBeta + BMI_females + BMI_males + CO + TFR_males
+F1~~F2 \n F1~~F3 \n F1~~F4 \n F2~~F3 \n F2~~F4 \n F3~~F4
+BMI_females ~~ ceio*BMI_females \n ceio > .0001 \n BMI_males ~~ acmr*BMI_males \n acmr > .0001 \n HIPadjBMI_females ~~ aekl*HIPadjBMI_females \n aekl > .0001 \n HIPadjBMI_males ~~ hiky*HIPadjBMI_males \n hiky > .0001 \n WCadjBMI_females ~~ adkq*WCadjBMI_females \n adkq > .0001 \n WCadjBMI_males ~~ ctuz*WCadjBMI_males \n ctuz > .0001 \n WHRadjBMI_females ~~ bgqz*WHRadjBMI_females \n bgqz > .0001 \n WHRadjBMI_males ~~ crsy*WHRadjBMI_males \n crsy > .0001 \n BL ~~ mnrt*BL \n mnrt > .0001 \n BW ~~ cefx*BW \n cefx > .0001 \n CO ~~ aciz*CO \n aciz > .0001 \n IHC ~~ bhsu*IHC \n bhsu > .0001 \n Height ~~ cdvw*Height \n cdvw > .0001 \n bmiTrajBeta ~~ fijx*bmiTrajBeta \n fijx > .0001 \n TFR_females ~~ cirw*TFR_females \n cirw > .0001 \n AFR_females ~~ fjps*AFR_females \n fjps > .0001 \n AFR_males ~~ cmuz*AFR_males \n cmuz > .0001
+")
+
+
 CFA2_EVEN <- usermodel(anthro_EVEN, model=Model_2_pro, std.lv=TRUE, imp_cov=TRUE)
 CFA2_EVEN$modelfit
-#       chisq  df p_chisq      AIC      CFI      SRMR
-# df 21460.36 127       0 21548.36 0.892376 0.1382072
+#       chisq  df p_chisq      AIC       CFI      SRMR
+# df 13736.92 127       0 13824.92 0.9313397 0.1173294
 
 commonfactor_EVEN <- commonfactor(anthro_EVEN)
 commonfactor_EVEN$modelfit
@@ -974,8 +988,8 @@ CFA2_EVEN$modelfit
 
 CFA2_Full <- usermodel(anthro_Full, model=Model_2_pro, std.lv=TRUE, imp_cov=TRUE)
 CFA2_Full$modelfit
-#       chisq  df p_chisq      AIC       CFI      SRMR
-# df 50482.39 127       0 50570.39 0.8878071 0.1300755
+#       chisq  df p_chisq      AIC       CFI     SRMR
+# df 28013.67 127       0 28101.67 0.9378679 0.113073
 sink("CFA2_Full.txt")
 CFA2_Full$results
 sink()
